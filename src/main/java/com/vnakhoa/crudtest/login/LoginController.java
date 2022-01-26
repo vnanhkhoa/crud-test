@@ -7,22 +7,16 @@ import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -87,6 +81,8 @@ public class LoginController {
             InputStream inputStream = image.getInputStream();
             Path fileUpload = path.resolve(fileName);
             Files.copy(inputStream,fileUpload, StandardCopyOption.REPLACE_EXISTING);
+
+            System.out.println(fileUpload.toFile().getAbsolutePath());
 
             user.setEmoji(fileName);
             User userNew = service.save(user);
