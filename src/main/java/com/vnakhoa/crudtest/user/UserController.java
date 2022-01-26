@@ -1,5 +1,6 @@
 package com.vnakhoa.crudtest.user;
 
+import com.vnakhoa.crudtest.CrudtestApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -74,13 +76,10 @@ public class UserController {
             User userNew = service.save(user);
             if (!image.isEmpty()) {
                 String fileName = user.getEmoji();
-                String dir = "./src/main/resources/static/images";
+                String dir = CrudtestApplication.URL_IMAGE + "/images/"+fileName;
 
-                Path path = Paths.get(dir);
-
-                InputStream inputStream = image.getInputStream();
-                Path fileUpload = path.resolve(fileName);
-                Files.copy(inputStream,fileUpload, StandardCopyOption.REPLACE_EXISTING);
+                File file = new File(dir);
+                image.transferTo(file);
             }
 
             ra.setAttribute("status","Edit User Success");
@@ -101,11 +100,12 @@ public class UserController {
             session.setAttribute("status","Delete User Fail");
             return "redirect:/";
         }
+        String dir = CrudtestApplication.URL_IMAGE + "/images/"+user.getEmoji();
+
+        File file = new File(dir);
+        file.delete();
 
         service.deleteById(id);
-
-        Path path = Paths.get("./src/main/resources/static/images/"+user.getEmoji());
-        Files.delete(path);
         session.setAttribute("status", "Delete User Successfully. Please Create A New Account");
         session.removeAttribute("user");
         return "redirect:/";
