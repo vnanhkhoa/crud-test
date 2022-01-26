@@ -78,9 +78,8 @@ public class LoginController {
                              @RequestParam("image") MultipartFile image) {
         try {
             String fileName = image.getOriginalFilename();
-            String dir = "src/main/resources/static/uploads";
 
-            Path path = Paths.get(dir);
+            Path path = Paths.get("uploads");
             if (!Files.exists(path)) {
                 Files.createDirectories(path);
             }

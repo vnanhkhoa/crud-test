@@ -1,5 +1,7 @@
 package com.vnakhoa.crudtest.user;
 
+import org.springframework.data.annotation.Transient;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -102,5 +104,12 @@ public class User implements Serializable {
                 ", address='" + address + '\'' +
                 ", emoji='" + emoji + '\'' +
                 '}';
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (emoji == null) return null;
+
+        return "/uploads/"  + emoji;
     }
 }
