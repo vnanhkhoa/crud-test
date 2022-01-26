@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div class="container border mt-5 mb-5">
+        <div class="dropdown ms-auto float-end"
+        >
+            <th:block th:if="${session.user}">
+                <a class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="rounded-circle" width="30" height="30" th:src="@{'/uploads/'+${session.user.emoji}}">
+                    [[${session.user.name}]]
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </th:block>
+
+            <th:block th:unless="${session.user}">
+                <div class="pt-2 pb-2">
+                    <a class="btn btn-primary" th:href="@{/login}">Login</a>
+                    <a class="btn btn-success" th:href="@{/join}">Join</a>
+                </div>
+            </th:block>
+
+        </div>
+        <table class="align-middle table">
+            <thead class="table-dark">
+                <th width="50">#</th>
+                <th>Emoji</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th width="200">Address</th>
+            </thead>
+            <tbody>
+                <th:block th:each="user,iter : ${users}">
+                    <tr>
+                        <td>[[${iter.index + 1}]]</td>
+                        <td>
+                            <img width="80" height="80" th:src="@{'/uploads/'+${user.emoji}}" alt="">
+                        </td>
+                        <td>
+                            <a th:href="@{'/user/'+ ${user.id}}">[[${user.id}]]</a>
+                        </td>
+                        <td>[[${user.name}]]</td>
+                        <td>[[${user.email}]]</td>
+                        <td>[[${user.phoneNumber}]]</td>
+                        <td>[[${user.address}]]</td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

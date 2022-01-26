@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="container h-100">
+    <div class="position-absolute top-50 start-50 translate-middle col-4 border rounded shadow-lg bg-body">
+        <div class="position-absolute p-3 pt-2 w-100 d-flex">
+            <a class="text-decoration-none me-auto" th:href="@{/}"><i class="fas fa-chevron-left"></i></a>
+            <th:block th:if="${isUser}">
+                <a th:href="@{'/edit-user/' + ${user.id}}" class="text-decoration-none" >Edit</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-decoration-none ms-1" >Delete</a>
+            </th:block>
+        </div>
+
+        <div>
+            <div class="p-3 pb-0 text-center">
+                <img class='rounded-circle' width='120' height='120' th:src="@{'/uploads/' + ${user.emoji}}">
+            </div>
+            <div class="p-3 pb-0">
+                <label class="form-label fw-bold">ID: [[${user.id}]]</label>
+            </div>
+            <div class="p-3 pb-0">
+                <label class="form-label fw-bold">E-mail: [[${user.email}]]</label>
+            </div>
+            <div class="p-3 pb-0">
+                <label class="form-label fw-bold">Phone number: [[${user.phoneNumber}]]</label>
+            </div>
+            <div class="p-3 pb-0">
+                <label class="form-label fw-bold">Name: [[${user.name}]]</label>
+            </div>
+            <div class="p-3">
+                <label class="form-label fw-bold">Address: [[${user.address}]]</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                <a th:href="@{'/delete-user/'+ ${user.id}}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
