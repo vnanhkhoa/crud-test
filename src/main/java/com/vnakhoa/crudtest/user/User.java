@@ -105,11 +105,4 @@ public class User implements Serializable {
                 ", emoji='" + emoji + '\'' +
                 '}';
     }
-
-    @Transient
-    public String getPhotosImagePath() {
-        if (emoji == null) return null;
-
-        return "/uploads/"  + emoji;
-    }
 }

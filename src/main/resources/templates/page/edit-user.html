@@ -14,7 +14,7 @@
                         <input type="file" name="image" id="upload_files" class="form-control d-none" value="Upload">
                         <input type="hidden"  name="emoji" th:value="${user.emoji}">
                     </label>
-                    <img class='rounded-circle' width='120' height='120' id='add-image' th:src="@{${user.getPhotosImagePath}}" title='image-upload'>
+                    <img class='rounded-circle' width='120' height='120' id='add-image' th:src="@{'/uploads/' + ${user.emoji}}" title='image-upload'>
                 </div>
             </div>
             <div class="alert alert-danger m-3 mb-0"></div>

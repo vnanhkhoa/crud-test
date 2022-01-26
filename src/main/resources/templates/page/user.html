@@ -14,7 +14,7 @@
 
         <div>
             <div class="p-3 pb-0 text-center">
-                <img class='rounded-circle' width='120' height='120' th:src="@{${user.getPhotosImagePath}}">
+                <img class='rounded-circle' width='120' height='120' th:src="@{'/uploads/' + ${user.emoji}}">
             </div>
             <div class="p-3 pb-0">
                 <label class="form-label fw-bold">ID: [[${user.id}]]</label>
