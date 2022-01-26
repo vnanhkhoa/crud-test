@@ -4,6 +4,7 @@ import com.vnakhoa.crudtest.CrudtestApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,10 +77,9 @@ public class UserController {
             User userNew = service.save(user);
             if (!image.isEmpty()) {
                 String fileName = user.getEmoji();
-                String dir = CrudtestApplication.URL_IMAGE + "/images/"+fileName;
+                String dir = "src/main/resources/static" + "/images/"+fileName;
 
-                File file = new File(dir);
-                image.transferTo(file);
+                FileCopyUtils.copy(image.getBytes(), new File(dir));
             }
 
             ra.setAttribute("status","Edit User Success");
@@ -100,10 +100,6 @@ public class UserController {
             session.setAttribute("status","Delete User Fail");
             return "redirect:/";
         }
-        String dir = CrudtestApplication.URL_IMAGE + "/images/"+user.getEmoji();
-
-        File file = new File(dir);
-        file.delete();
 
         service.deleteById(id);
         session.setAttribute("status", "Delete User Successfully. Please Create A New Account");
