@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,6 +30,9 @@ public class LoginController {
 
     @Autowired
     UserRepository service;
+
+    @Autowired
+    ServletContext servletContext;
 
     public Model setPage(Model model, String title, String content){
         model.addAttribute("content",content);
@@ -73,16 +78,24 @@ public class LoginController {
                              @RequestParam("image") MultipartFile image) {
         try {
             String fileName = image.getOriginalFilename();
-            String dir = "src/main/resources/static/uploads";
-
-            Path path = Paths.get(dir);
-            if (!Files.exists(path)) {
-                Files.createDirectories(path);
+            Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
+            Path staticPath = Paths.get("static");
+            Path imagePath = Paths.get("uploads");
+            if (!Files.exists(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath))) {
+                Files.createDirectories(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath));
             }
-
+            Path file = CURRENT_FOLDER.resolve(staticPath)
+                    .resolve(imagePath).resolve(fileName);
+//
+//            String dir = servletContext.getResourcePaths("")+"/";
+//
+//            Path path = Paths.get(dir);
+//            if (!Files.exists(path)) {
+//                Files.createDirectories(path);
+//            }
+//
             InputStream inputStream = image.getInputStream();
-            Path fileUpload = path.resolve(fileName);
-            Files.copy(inputStream,fileUpload, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(inputStream,file, StandardCopyOption.REPLACE_EXISTING);
 
             user.setEmoji(fileName);
             User userNew = service.save(user);

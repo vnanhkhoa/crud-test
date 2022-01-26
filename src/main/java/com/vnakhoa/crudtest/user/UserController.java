@@ -37,7 +37,7 @@ public class UserController {
         }
         User user = check.get();
         User current = (User) session.getAttribute("user");
-        if (user.getId().equals(current.getId())) {
+        if (current != null && user.getId().equals(current.getId())) {
             model.addAttribute("isUser",true);
         }
         model.addAttribute("user",user);
