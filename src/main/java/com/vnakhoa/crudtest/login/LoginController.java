@@ -78,24 +78,16 @@ public class LoginController {
                              @RequestParam("image") MultipartFile image) {
         try {
             String fileName = image.getOriginalFilename();
-            Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
-            Path staticPath = Paths.get("static");
-            Path imagePath = Paths.get("uploads");
-            if (!Files.exists(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath))) {
-                Files.createDirectories(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath));
+            String dir = "src/main/resources/static/uploads";
+
+            Path path = Paths.get(dir);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
             }
-            Path file = CURRENT_FOLDER.resolve(staticPath)
-                    .resolve(imagePath).resolve(fileName);
-//
-//            String dir = servletContext.getResourcePaths("")+"/";
-//
-//            Path path = Paths.get(dir);
-//            if (!Files.exists(path)) {
-//                Files.createDirectories(path);
-//            }
-//
+
             InputStream inputStream = image.getInputStream();
-            Files.copy(inputStream,file, StandardCopyOption.REPLACE_EXISTING);
+            Path fileUpload = path.resolve(fileName);
+            Files.copy(inputStream,fileUpload, StandardCopyOption.REPLACE_EXISTING);
 
             user.setEmoji(fileName);
             User userNew = service.save(user);
