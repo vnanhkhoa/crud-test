@@ -74,7 +74,7 @@ public class UserController {
             User userNew = service.save(user);
             if (!image.isEmpty()) {
                 String fileName = user.getEmoji();
-                String dir = "src/main/resources/static/uploads";
+                String dir = "./src/main/resources/static/images";
 
                 Path path = Paths.get(dir);
 
@@ -104,7 +104,7 @@ public class UserController {
 
         service.deleteById(id);
 
-        Path path = Paths.get("src/main/resources/static/uploads/"+user.getEmoji());
+        Path path = Paths.get("./src/main/resources/static/images/"+user.getEmoji());
         Files.delete(path);
         session.setAttribute("status", "Delete User Successfully. Please Create A New Account");
         session.removeAttribute("user");

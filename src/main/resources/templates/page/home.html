@@ -6,7 +6,7 @@
         >
             <th:block th:if="${session.user}">
                 <a class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="rounded-circle" width="30" height="30" th:src="@{'/uploads/'+${session.user.emoji}}">
+                    <img class="rounded-circle" width="30" height="30" th:src="@{'/images/'+${session.user.emoji}}">
                     [[${session.user.name}]]
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -37,7 +37,7 @@
                     <tr>
                         <td>[[${iter.index + 1}]]</td>
                         <td>
-                            <img width="80" height="80" th:src="@{'/uploads/'+${user.emoji}}" alt="">
+                            <img width="80" height="80" th:src="@{'/images/'+${user.emoji}}" alt="">
                         </td>
                         <td>
                             <a th:href="@{'/user/'+ ${user.id}}">[[${user.id}]]</a>
