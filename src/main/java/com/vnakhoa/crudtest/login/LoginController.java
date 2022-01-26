@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
@@ -70,14 +71,15 @@ public class LoginController {
     }
 
     @PostMapping("/join")
-    public String handleJoin(@ModelAttribute("user") User user, HttpSession ra,
-                             @RequestParam("image") MultipartFile image) {
+    public String handleJoin(@ModelAttribute("user") User user, HttpSession ra, HttpServletRequest req) {
         try {
-            String fileName = image.getOriginalFilename();
-            String dir = CrudtestApplication.URL_IMAGE + "/images/"+fileName;
+            Part filePart = req.getPart("image");
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String readPath = req.getServletContext().getRealPath("/images");
 
-            File file = new File(dir);
-            image.transferTo(file);
+            if(!new File(readPath+"/"+fileName).exists()) {
+                filePart.write(readPath+"/"+fileName);
+            }
 
             user.setEmoji(fileName);
             service.save(user);
