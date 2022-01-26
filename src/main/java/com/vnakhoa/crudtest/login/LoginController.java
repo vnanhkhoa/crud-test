@@ -6,11 +6,11 @@ import com.vnakhoa.crudtest.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.File;
@@ -71,15 +71,13 @@ public class LoginController {
     }
 
     @PostMapping("/join")
-    public String handleJoin(@ModelAttribute("user") User user, HttpSession ra, HttpServletRequest req) {
+    public String handleJoin(@ModelAttribute("user") User user, HttpSession ra,
+                             @RequestParam("image") MultipartFile image) {
         try {
-            Part filePart = req.getPart("image");
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String readPath = req.getServletContext().getRealPath("/images");
+            String fileName = image.getOriginalFilename();
+            String dir = "src/main/resources/static" + "/images/"+fileName;
 
-            if(!new File(readPath+"/"+fileName).exists()) {
-                filePart.write(readPath+"/"+fileName);
-            }
+            FileCopyUtils.copy(image.getBytes(), new File(dir));
 
             user.setEmoji(fileName);
             service.save(user);
