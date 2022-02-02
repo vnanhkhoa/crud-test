@@ -64,7 +64,6 @@ public class UserController {
     public String handleJoin(@ModelAttribute("user") User user, HttpSession ra,
                              @RequestParam("image") MultipartFile image) {
         try {
-            System.out.print(user.toString());
             Optional<User> check = service.findById(user.getId());
             if (!check.isPresent()) {
                 ra.setAttribute("status","User don't exit");
@@ -74,7 +73,7 @@ public class UserController {
             User userNew = service.save(user);
             if (!image.isEmpty()) {
                 String fileName = user.getEmoji();
-                String dir = "src/main/resources/static/uploads";
+                String dir = "uploads";
 
                 Path path = Paths.get(dir);
                 if (!Files.exists(path)) {
@@ -107,7 +106,7 @@ public class UserController {
 
         service.deleteById(id);
 
-        Path path = Paths.get("src/main/resources/static/uploads/"+user.getEmoji());
+        Path path = Paths.get("uploads/"+user.getEmoji());
         Files.delete(path);
         session.setAttribute("status", "Delete User Successfully. Please Create A New Account");
         session.removeAttribute("user");
